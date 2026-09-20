@@ -1,0 +1,246 @@
+/* Szitár-Net Challenge requirement: all link colors rgb(20, 96, 130) */
+a {
+    color: rgb(20, 96, 130);
+}
+
+main > .container {
+    padding: 70px 15px 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+.not-set {
+    color: var(--bs-danger);
+    font-style: italic;
+}
+
+/* add sorting icons to gridview sort links */
+a.asc:after, a.desc:after {
+    content: '';
+    left: 3px;
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border: solid 5px transparent;
+    margin: 4px 4px 2px 4px;
+    background: transparent;
+}
+
+a.asc:after {
+    border-bottom: solid 7px var(--bs-body-color);
+    border-top-width: 0;
+}
+
+a.desc:after {
+    border-top: solid 7px var(--bs-body-color);
+    border-bottom-width: 0;
+}
+
+.grid-view th {
+    white-space: nowrap;
+}
+
+.hint-block {
+    display: block;
+    margin-top: 5px;
+    color: var(--bs-secondary-color);
+}
+
+.error-summary {
+    color: var(--bs-danger-text-emphasis);
+    background: var(--bs-danger-bg-subtle);
+    border-left: 3px solid var(--bs-danger-border-subtle);
+    padding: 10px 20px;
+    margin: 0 0 15px 0;
+}
+
+/* align navbar brand baseline with nav links */
+.navbar > .container,
+.navbar > .container-fluid {
+    align-items: baseline;
+}
+
+/* footer logo: light logo by default, dark logo for dark theme */
+.footer-logo-dark { display: none; }
+
+[data-bs-theme="dark"] .footer-logo-light { display: none; }
+[data-bs-theme="dark"] .footer-logo-dark  { display: inline-block; }
+
+/* centered page layout */
+.site-index,
+.site-error {
+    flex: 1;
+}
+
+.site-error .site-error-content {
+    width: 100%;
+    max-width: 90%;
+}
+
+@media (min-width: 768px) {
+    .site-error .site-error-content {
+        max-width: 60%;
+    }
+}
+
+/* -------------------------------------------------------
+   Datepicker calendar button
+   ------------------------------------------------------- */
+.input-group .input-group-addon {
+    display: flex;
+    align-items: stretch;
+}
+
+.input-group .input-group-addon .btn,
+.input-group .input-group-addon button {
+    border-left: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    padding: 0 0.875rem;
+    background-color: var(--bs-tertiary-bg);
+    border-color: var(--bs-border-color);
+    color: rgb(20, 96, 130);
+    transition: background-color .15s ease, color .15s ease;
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.input-group .input-group-addon .btn:hover,
+.input-group .input-group-addon button:hover {
+    background-color: rgb(20, 96, 130);
+    color: #fff;
+    border-color: rgb(20, 96, 130);
+}
+
+[data-bs-theme="dark"] .input-group .input-group-addon .btn,
+[data-bs-theme="dark"] .input-group .input-group-addon button {
+    background-color: var(--bs-tertiary-bg);
+    border-color: var(--bs-border-color);
+    color: rgb(64, 179, 216);
+}
+
+[data-bs-theme="dark"] .input-group .input-group-addon .btn:hover,
+[data-bs-theme="dark"] .input-group .input-group-addon button:hover {
+    background-color: rgb(20, 96, 130);
+    color: #fff;
+    border-color: rgb(20, 96, 130);
+}
+
+/* -------------------------------------------------------
+   Pagination
+   ------------------------------------------------------- */
+.pagination {
+    gap: 3px;
+    flex-wrap: wrap;
+}
+
+.pagination .page-item .page-link {
+    min-width: 2.4rem;
+    height: 2.4rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px !important;
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0 0.6rem;
+    border: 1px solid var(--bs-border-color);
+    color: rgb(20, 96, 130);
+    background-color: var(--bs-body-bg);
+    transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+    line-height: 1;
+}
+
+.pagination .page-item .page-link:hover {
+    background-color: rgb(20, 96, 130);
+    border-color: rgb(20, 96, 130);
+    color: #fff;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: rgb(20, 96, 130);
+    border-color: rgb(20, 96, 130);
+    color: #fff;
+    font-weight: 600;
+}
+
+.pagination .page-item.disabled .page-link {
+    color: var(--bs-secondary-color);
+    background-color: var(--bs-tertiary-bg);
+    border-color: var(--bs-border-color);
+    opacity: 0.55;
+}
+
+[data-bs-theme="dark"] .pagination .page-item .page-link {
+    background-color: var(--bs-tertiary-bg);
+    border-color: var(--bs-border-color);
+    color: rgb(64, 179, 216);
+}
+
+[data-bs-theme="dark"] .pagination .page-item .page-link:hover {
+    background-color: rgb(20, 96, 130);
+    border-color: rgb(20, 96, 130);
+    color: #fff;
+}
+
+[data-bs-theme="dark"] .pagination .page-item.active .page-link {
+    background-color: rgb(20, 96, 130);
+    border-color: rgb(20, 96, 130);
+    color: #fff;
+}
+
+/* hero banner */
+.hero-banner {
+    background: linear-gradient(135deg, #83C933 0%, #3a9cbd 40%, #40B3D8 100%);
+    position: relative;
+}
+
+.hero-lead {
+    max-width: 520px;
+}
+
+.hero-logo {
+    height: 120px;
+    opacity: .45;
+    right: 2.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.hero-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background:
+        radial-gradient(circle at 15% 85%, rgba(241, 138, 42, .3) 0%, transparent 45%),
+        radial-gradient(circle at 85% 15%, rgba(131, 201, 51, .25) 0%, transparent 40%),
+        radial-gradient(ellipse at 50% 50%, rgba(64, 179, 216, .15) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+/* extension cards */
+.extension-card {
+    transition: transform .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.extension-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .12) !important;
+}
+
+.extension-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+/* dark mode: extension cards */
+[data-bs-theme="dark"] .extension-card {
+    background-color: var(--bs-body-bg);
+    box-shadow: 0 0 0 1px var(--bs-border-color), 0 2px 8px rgba(0, 0, 0, .3);
+}
+
+[data-bs-theme="dark"] .extension-card:hover {
+    box-shadow: 0 0 0 1px var(--bs-border-color), 0 8px 24px rgba(0, 0, 0, .4) !important;
+}
