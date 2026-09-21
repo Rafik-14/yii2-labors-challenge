@@ -3,10 +3,10 @@
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
-// The cookie signing key comes from the environment. A fixed key is only acceptable for local development.
+// The cookie signing key comes from the environment. A fixed key is only acceptable for local development and tests.
 $cookieValidationKey = env('COOKIE_VALIDATION_KEY', '');
 if ($cookieValidationKey === '') {
-    if (!YII_ENV_DEV) {
+    if (!YII_ENV_DEV && !YII_ENV_TEST) {
         throw new \yii\base\InvalidConfigException('The COOKIE_VALIDATION_KEY environment variable must be set.');
     }
     $cookieValidationKey = 'insecure-local-development-key';
