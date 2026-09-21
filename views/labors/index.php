@@ -7,6 +7,7 @@ use yii\grid\ActionColumn;
 use yii\grid\GridView;
 
 /** @var yii\web\View $this */
+/** @var app\models\LaborsSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = Yii::t('app', 'Labors');
@@ -20,9 +21,11 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a(Yii::t('app', 'Create Labors'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-
+    <div class="table-responsive">
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'tableOptions' => ['class' => 'table table-striped table-bordered align-middle'],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -34,16 +37,16 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'need_work',
                 'format' => 'boolean',
-                'label' => Yii::t('app', 'Need Work'),
+                'filter' => [1 => Yii::$app->formatter->asBoolean(true), 0 => Yii::$app->formatter->asBoolean(false)],
             ],
             'working_minutes',
             [
                 'attribute' => 'working_date',
-                'format' => ['date', 'php:d-M-Y H:i:s'],
-                'label' => Yii::t('app', 'Working Date'),
+                'value' => static fn (Labors $model) => $model->getWorkingDateDisplay(),
+                'filterInputOptions' => ['class' => 'form-control', 'placeholder' => '2021-05-19'],
             ],
             [
-                'class' => ActionColumn::className(),
+                'class' => ActionColumn::class,
                 'template' => '{view} {update}',
                 'urlCreator' => function ($action, Labors $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
@@ -51,6 +54,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
-
+    </div>
 
 </div>

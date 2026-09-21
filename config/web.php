@@ -3,12 +3,25 @@
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
+// The cookie signing key comes from the environment. A fixed key is only acceptable for local development.
+$cookieValidationKey = env('COOKIE_VALIDATION_KEY', '');
+if ($cookieValidationKey === '') {
+    if (!YII_ENV_DEV) {
+        throw new \yii\base\InvalidConfigException('The COOKIE_VALIDATION_KEY environment variable must be set.');
+    }
+    $cookieValidationKey = 'insecure-local-development-key';
+}
+
 $config = [
     'id' => 'basic',
     'language' => 'hu-HU',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'container' => [
+        'definitions' => [
+            // Bootstrap 5 markup (.page-item / .page-link) for every GridView/ListView pager.
+            \yii\widgets\LinkPager::class => \yii\bootstrap5\LinkPager::class,
+        ],
         'singletons' => [
             \yii\mail\MailerInterface::class => [
                 'class' => \yii\symfonymailer\Mailer::class,
@@ -24,8 +37,7 @@ $config = [
     ],
     'components' => [
         'request' => [
-            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => 'J1ryL8EMWxnKOVGeGsCfaz9AxQ2Mgx5H',
+            'cookieValidationKey' => $cookieValidationKey,
             'parsers' => [
                 'application/json' => 'yii\web\JsonParser',
             ],
@@ -67,8 +79,8 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                // other verbs still reach the action and are rejected with 405 by its VerbFilter
                 'POST api/works' => 'api/works',
-                'api/works' => 'api/works',
                 'labors' => 'labors/index',
                 'labors/<action:\w+>' => 'labors/<action>',
             ],
@@ -78,19 +90,17 @@ $config = [
 ];
 
 if (YII_ENV_DEV) {
-    // configuration adjustments for 'dev' environment
+    // configuration adjustments for 'dev' environment (never enable YII_ENV=dev in production)
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [
         'class' => \yii\debug\Module::class,
-        // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
+        'allowedIPs' => ['127.0.0.1', '::1'],
     ];
 
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
         'class' => \yii\gii\Module::class,
-        // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
+        'allowedIPs' => ['127.0.0.1', '::1'],
     ];
 }
 

@@ -3,18 +3,17 @@
 **Project**: Yii2 Labors Challenge - Professional Submission  
 **Author**: Rafik-14 (https://github.com/Rafik-14)
 
-## Database Configuration
+See [README.md](README.md) for the full documentation. Quick version:
 
-This project uses environment variables for database configuration to keep credentials secure and flexible.
-
-### Quick Setup
+## Environment
 
 1. **Copy the example environment file:**
    ```bash
    cp .env.example .env
    ```
 
-2. **Edit `.env` with your MySQL credentials:**
+2. **Edit `.env`** with your MySQL credentials. The example file already enables development mode
+   (`YII_DEBUG=true`, `YII_ENV=dev`), which works with standard XAMPP/WAMP installations:
    ```env
    DB_HOST=127.0.0.1
    DB_NAME=yii2_labors_db
@@ -22,20 +21,15 @@ This project uses environment variables for database configuration to keep crede
    DB_PASSWORD=your_password_here
    ```
 
-3. **Import the database:**
-   ```bash
-   mysql -u root -p yii2_labors_db < yii2_labors_db.sql
-   ```
+Without a `.env` file the application runs in production mode and requires `COOKIE_VALIDATION_KEY`
+to be set in the environment.
 
-### Default Configuration
+## Database
 
-If you don't create a `.env` file, the application will use these default values:
-- Host: `127.0.0.1`
-- Database: `yii2_labors_db`
-- Username: `root`
-- Password: (empty)
-
-These defaults work with standard XAMPP/WAMP installations.
+```bash
+mysql -u root -p -e "CREATE DATABASE yii2_labors_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+php yii migrate --interactive=0
+```
 
 ## Running the Application
 
@@ -46,7 +40,7 @@ These defaults work with standard XAMPP/WAMP installations.
 
 2. **Start the development server:**
    ```bash
-   php -S localhost:8080 -t web web/index.php
+   php yii serve --port=8080
    ```
 
 3. **Access the application:**
@@ -55,7 +49,12 @@ These defaults work with standard XAMPP/WAMP installations.
 
 ## Running Tests
 
+Tests use a separate database (`TEST_DB_NAME`, default `yii2_labors_test`):
+
 ```bash
+mysql -u root -p -e "CREATE DATABASE yii2_labors_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+php tests/Support/bin/yii migrate --interactive=0
+vendor/bin/codecept build
 vendor/bin/codecept run Unit
 ```
 

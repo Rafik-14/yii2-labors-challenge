@@ -2,6 +2,8 @@
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/test_db.php';
+// Reuse the web application's routing, parsing, translation and DI settings so tests exercise the real runtime.
+$web = require __DIR__ . '/web.php';
 
 /**
  * Application configuration shared by all test types
@@ -16,9 +18,13 @@ return [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
-    'language' => 'en-US',
+    'language' => $web['language'],
+    'container' => [
+        'definitions' => $web['container']['definitions'],
+    ],
     'components' => [
         'db' => $db,
+        'i18n' => $web['components']['i18n'],
         'mailer' => [
             'class' => \yii\symfonymailer\Mailer::class,
             'messageClass' => \yii\symfonymailer\Message::class,
@@ -28,21 +34,14 @@ return [
         'assetManager' => [
             'basePath' => __DIR__ . '/../web/assets',
         ],
-        'urlManager' => [
-            'showScriptName' => true,
-        ],
+        'urlManager' => $web['components']['urlManager'],
         'user' => [
             'identityClass' => \app\models\User::class,
         ],
         'request' => [
             'cookieValidationKey' => 'test',
             'enableCsrfValidation' => false,
-            // but if you absolutely need it set cookie domain to localhost
-            /*
-            'csrfCookie' => [
-                'domain' => 'localhost',
-            ],
-            */
+            'parsers' => $web['components']['request']['parsers'],
         ],
     ],
     'params' => $params,

@@ -32,8 +32,8 @@ class m260918_154833_mockupload extends Migration
                 $item['last_name'] ?? '',
                 $item['email'] ?? null,
                 $item['ip_address'] ?? null,
-                !empty($item['need_work']) ? 1 : 0,
-                $item['working_minutes'] !== null ? (int)$item['working_minutes'] : null,
+                !empty($item['need_work']),
+                isset($item['working_minutes']) ? (int) $item['working_minutes'] : null,
                 $item['working_date'] ?? null,
             ];
 
@@ -46,6 +46,9 @@ class m260918_154833_mockupload extends Migration
         if (!empty($batch)) {
             $this->batchInsert('{{%labors}}', $columns, $batch);
         }
+
+        // Explicit ids do not advance the id sequence on PostgreSQL/SQLite; move it past the seeded rows.
+        $this->db->createCommand()->resetSequence('{{%labors}}')->execute();
     }
 
     /**
@@ -53,21 +56,7 @@ class m260918_154833_mockupload extends Migration
      */
     public function safeDown()
     {
-        $this->truncateTable('{{%labors}}');
+        // DELETE (not TRUNCATE): TRUNCATE causes an implicit commit in MySQL and cannot be rolled back.
+        $this->delete('{{%labors}}');
     }
-
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
-
-    }
-
-    public function down()
-    {
-        echo "m260918_154833_mockupload cannot be reverted.\n";
-
-        return false;
-    }
-    */
 }

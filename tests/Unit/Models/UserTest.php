@@ -6,46 +6,23 @@ namespace app\tests\Unit\Models;
 
 use app\models\User;
 
+/**
+ * The project intentionally ships without a login flow: User is a stub that never resolves an identity.
+ */
 final class UserTest extends \Codeception\Test\Unit
 {
-    public function testFindUserById()
+    public function testNoIdentityCanBeFound()
     {
-        /** @var User $user */
-        $user = User::findIdentity(100);
-
-        verify($user)->notEmpty();
-        verify($user->username)->equals('admin');
-        verify(User::findIdentity(999))->empty();
+        verify(User::findIdentity(100))->null();
+        verify(User::findIdentityByAccessToken('100-token'))->null();
+        verify(User::findByUsername('admin'))->null();
     }
 
-    public function testFindUserByAccessToken()
+    public function testAuthKeyIsNeverValid()
     {
-        /** @var User $user */
-        $user = User::findIdentityByAccessToken('100-token');
+        $user = new User(['id' => 1, 'username' => 'admin']);
 
-        verify($user)->notEmpty();
-        verify($user->username)->equals('admin');
-        verify(User::findIdentityByAccessToken('non-existing'))->empty();
-    }
-
-    public function testFindUserByUsername()
-    {
-        /** @var User $user */
-        $user = User::findByUsername('admin');
-
-        verify($user)->notEmpty();
-        verify(User::findByUsername('not-admin'))->empty();
-    }
-
-    /**
-     * @depends testFindUserByUsername
-     */
-    public function testValidateUser()
-    {
-        /** @var User $user */
-        $user = User::findByUsername('admin');
-
-        verify($user->validateAuthKey('test100key'))->notEmpty();
-        verify($user->validateAuthKey('test102key'))->empty();
+        verify($user->getAuthKey())->null();
+        verify($user->validateAuthKey('test100key'))->false();
     }
 }

@@ -4,17 +4,20 @@ A Yii 2 application for managing labor records and exposing the aggregated work 
 
 This project is not the stock Yii 2 basic template login/logout demo. It has been customized for a labor-tracking challenge and includes:
 
-- a CRUD interface for labor records at `/labors`
+- a CRUD interface for labor records at `/labors` (Hungarian UI, Kartik DatePicker and Checkbox-X widgets)
 - an API endpoint at `POST /api/works`
-- MySQL/MariaDB-backed persistence
+- MySQL/MariaDB-backed persistence managed by migrations
 - a built-in PHP CLI server static-file guard in `web/index.php`
 
 ## Features
 
 - View, create, update, and delete labor records
-- Filter records by `need_work`
+- Filter every grid column (name, e-mail, IP, need-work, minutes, date), sort, and paginate (20 per page)
+- Server-side validation: trimmed names, valid e-mail and IP, 0–1440 working minutes, strict dates
+- Dates are entered and shown in the English format required by the spec (`23-Feb-1982`) and stored as `Y-m-d H:i:s`;
+  editing only the date of an existing shift keeps its stored start time
 - Aggregate working minutes by worker and date for the API response
-- Local development support via the built-in PHP web server
+- Hungarian (`hu-HU`) translations for all labels, buttons, messages and pages
 
 ## Local setup
 
@@ -24,54 +27,44 @@ This project is not the stock Yii 2 basic template login/logout demo. It has bee
 composer install
 ```
 
-### 2) Configure the database
+### 2) Configure the environment
 
 ```bash
 cp .env.example .env
 ```
 
-Edit `.env` with your local MySQL/MariaDB credentials:
+`.env.example` documents every variable. The important ones:
 
-```env
-DB_HOST=127.0.0.1
-DB_NAME=yii2_labors_db
-DB_USER=root
-DB_PASSWORD=your_password_here
-```
+| Variable | Default | Purpose |
+|---|---|---|
+| `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` | `127.0.0.1`, `yii2_labors_db`, `root`, *(empty)* | Application database |
+| `TEST_DB_NAME` | `yii2_labors_test` | Separate database used by the test suite |
+| `YII_DEBUG`, `YII_ENV` | `false`, `prod` | Set to `true` / `dev` locally for the debug toolbar and Gii |
+| `COOKIE_VALIDATION_KEY` | *(none)* | Required unless `YII_ENV=dev`. Generate: `php -r "echo bin2hex(random_bytes(32));"` |
+| `API_TOKEN` | *(empty)* | When set, `POST /api/works` requires `Authorization: Bearer <token>` |
+| `API_CORS_ORIGINS` | `*` | Comma-separated origins allowed to call the API from a browser |
 
-If you do not create `.env`, the app falls back to:
+Real environment variables (Docker, CI, hosting panel) override values from `.env`.
+Without a `.env` file the application starts in **production mode**, so `COOKIE_VALIDATION_KEY` must then be set.
 
-```text
-DB_HOST=127.0.0.1
-DB_NAME=yii2_labors_db
-DB_USER=root
-DB_PASSWORD=
-```
-
-### 3) Create the database and import the provided schema/data
+### 3) Create the database
 
 ```bash
 mysql -u root -p -e "CREATE DATABASE yii2_labors_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-mysql -u root -p yii2_labors_db < yii2_labors_db.sql
-```
-
-Alternatively, you can create the empty database and run migrations:
-
-```bash
 php yii migrate --interactive=0
 ```
+
+The migrations create the table and seed the 1,000 mock records from `data/mock-data.json`.
+Alternatively import `yii2_labors_db.sql`, then still run `php yii migrate --interactive=0` to apply the schema
+updates added after the dump was taken.
 
 ### 4) Start the application
 
 ```bash
-php -S localhost:8080 -t web web/index.php
+php yii serve --port=8080
 ```
 
-Open:
-
-```text
-http://localhost:8080/labors
-```
+Open `http://localhost:8080/labors`.
 
 ### 5) Test the API
 
@@ -79,43 +72,66 @@ http://localhost:8080/labors
 curl -X POST http://localhost:8080/api/works
 ```
 
+## API: `POST /api/works`
+
+Returns every shift with `need_work = true`, grouped by calendar day (`YYYY-MM-DD`, chronological), then by the
+worker's full name, with `working_minutes` summed per worker per day (`null` minutes count as `0`):
+
+```json
+{
+  "2021-05-19": {
+    "Basile Seedhouse": { "name": "Basile Seedhouse", "working_minutes": 301 }
+  }
+}
+```
+
+- Other HTTP methods get `405 Method Not Allowed`; CORS preflight (`OPTIONS`) is supported.
+- If `API_TOKEN` is set, a missing or wrong bearer token gets `401 Unauthorized`.
+- If the database is unreachable, the error is logged and the response is built from `data/mock-data.json`
+  with the same rules and ordering.
+- Workers are identified by full name, as the specification requires; two different people with the same
+  first and last name are therefore summed together.
+
+## Tests
+
+The suite uses its own database so it never modifies development data.
+
+```bash
+mysql -u root -p -e "CREATE DATABASE yii2_labors_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+php tests/Support/bin/yii migrate --interactive=0
+vendor/bin/codecept build
+vendor/bin/codecept run Unit
+```
+
+Unit tests cover the model rules and date conversion, the search model, the API aggregation rules
+(multi-shift sums, null minutes, excluded rows, invalid dates, midnight boundaries), the database fallback,
+the 405/401 responses, and the flash-alert widget. Database tests run inside a transaction that is rolled back.
+
+The acceptance test (`tests/Acceptance/HomeCest.php`) needs a running server:
+
+```bash
+vendor/bin/codecept run Acceptance -o "modules: config: PhpBrowser: url: http://localhost:8080"
+```
+
 ## Project structure
 
 ```text
-config/        Yii app and DB configuration
+config/        Yii app, DB and environment configuration (config/env.php loads .env)
 controllers/   Web controllers and API endpoints
-models/        ActiveRecord models
-migrations/    Database schema setup
-data/          Mock data used for fallback or migration seeding
+models/        ActiveRecord model, search model and the API report builder
+migrations/    Database schema setup and seeding
+data/          Mock data used for seeding and as the API fallback (not web-accessible)
 views/         UI templates
-web/           Public entry point and static assets
+web/           Public entry point and static assets (the only directory that should be web-served)
 tests/         Codeception tests
 ```
 
 ## Authentication status
 
-This repository does not include a login/logout system. The README no longer describes a user authentication flow, and there is no login controller or login page in the current project.
-
-## Contradictions and stale content found
-
-The original README was the stock Yii 2 basic template README, which contradicted the actual project in several places:
-
-1. It described a generic Yii app with user login/logout and a contact page.
-   - The application currently has no login/logout flow.
-   - There is no contact page in the active controllers/views.
-
-2. It recommended `composer create-project yiisoft/yii2-app-basic basic`.
-   - This project is already a completed app, not a freshly scaffolded template.
-
-3. It included Docker and generic installation instructions for the template.
-   - Those instructions are not specific to this repository and do not reflect the actual project behavior.
-
-4. It implied the default Yii template features were part of the project.
-   - The real app is focused on labor records and JSON aggregation.
-
-5. It mentions a contact page and basic auth flow that do not exist in the codebase.
-   - `SiteController` only exposes the home page and error action.
-   - `models/LoginForm.php` exists as a leftover pattern, but there is no actual login route or UI connected to it.
+This repository does not include a login/logout system, and the CRUD pages are public, as in the challenge
+specification. `models/User.php` is an intentional stub that never resolves an identity. Before exposing the
+application beyond a trusted network, put it behind authentication (for example web-server basic auth or an
+`AccessControl` filter once a real identity source exists).
 
 ## Notes
 

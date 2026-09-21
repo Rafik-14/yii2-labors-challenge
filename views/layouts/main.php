@@ -21,9 +21,11 @@ $this->render('_head');
 <body class="d-flex flex-column h-100">
 <?php $this->beginBody() ?>
 
+<a class="visually-hidden-focusable position-absolute top-0 start-0 m-2 p-2 bg-body border rounded z-3" href="#main"><?= Yii::t('app', 'Skip to main content') ?></a>
+
 <?= $this->render('_header') ?>
 
-<main id="main" class="flex-grow-1" role="main">
+<main id="main" class="flex-grow-1" role="main" tabindex="-1">
     <div class="container">
         <?php if (!empty($this->params['breadcrumbs'])): ?>
             <?= Breadcrumbs::widget(['links' => $this->params['breadcrumbs']]) ?>

@@ -3,6 +3,11 @@ a {
     color: rgb(20, 96, 130);
 }
 
+/* narrow centered layout for the create/update forms */
+.max-width-900 {
+    max-width: 900px;
+}
+
 main > .container {
     padding: 70px 15px 20px;
     display: flex;
@@ -85,46 +90,31 @@ a.desc:after {
 }
 
 /* -------------------------------------------------------
-   Datepicker calendar button
+   Datepicker addons (Kartik renders .input-group-text in Bootstrap 5)
    ------------------------------------------------------- */
-.input-group .input-group-addon {
-    display: flex;
-    align-items: stretch;
-}
-
-.input-group .input-group-addon .btn,
-.input-group .input-group-addon button {
-    border-left: 0;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    padding: 0 0.875rem;
+.input-group .kv-date-picker,
+.input-group .kv-date-remove {
+    cursor: pointer;
     background-color: var(--bs-tertiary-bg);
-    border-color: var(--bs-border-color);
     color: rgb(20, 96, 130);
     transition: background-color .15s ease, color .15s ease;
-    font-size: 1rem;
-    line-height: 1;
 }
 
-.input-group .input-group-addon .btn:hover,
-.input-group .input-group-addon button:hover {
+.input-group .kv-date-picker:hover,
+.input-group .kv-date-remove:hover {
     background-color: rgb(20, 96, 130);
-    color: #fff;
     border-color: rgb(20, 96, 130);
+    color: #fff;
 }
 
-[data-bs-theme="dark"] .input-group .input-group-addon .btn,
-[data-bs-theme="dark"] .input-group .input-group-addon button {
-    background-color: var(--bs-tertiary-bg);
-    border-color: var(--bs-border-color);
+[data-bs-theme="dark"] .input-group .kv-date-picker,
+[data-bs-theme="dark"] .input-group .kv-date-remove {
     color: rgb(64, 179, 216);
 }
 
-[data-bs-theme="dark"] .input-group .input-group-addon .btn:hover,
-[data-bs-theme="dark"] .input-group .input-group-addon button:hover {
-    background-color: rgb(20, 96, 130);
+[data-bs-theme="dark"] .input-group .kv-date-picker:hover,
+[data-bs-theme="dark"] .input-group .kv-date-remove:hover {
     color: #fff;
-    border-color: rgb(20, 96, 130);
 }
 
 /* -------------------------------------------------------

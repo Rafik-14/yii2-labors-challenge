@@ -46,7 +46,10 @@ final class LoginFormTest extends \Codeception\Test\Unit
         verify($this->_model->errors)->arrayHasKey('password');
     }
 
-    public function testLoginCorrect()
+    /**
+     * The former template demo account must no longer work: login is intentionally disabled (see models/User.php).
+     */
+    public function testLegacyDemoAccountIsRejected()
     {
         $this->_model = new LoginForm(
             new Security(),
@@ -56,8 +59,8 @@ final class LoginFormTest extends \Codeception\Test\Unit
             ],
         );
 
-        verify($this->_model->login())->true();
-        verify(Yii::$app->user->isGuest)->false();
-        verify($this->_model->errors)->arrayHasNotKey('password');
+        verify($this->_model->login())->false();
+        verify(Yii::$app->user->isGuest)->true();
+        verify($this->_model->errors)->arrayHasKey('password');
     }
 }
