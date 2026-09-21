@@ -1,0 +1,9 @@
+# Seed data contains personal data (names, e-mails, IPs) and must never be served over HTTP,
+# even if a server is misconfigured to use the project root instead of web/ as document root.
+<IfModule mod_authz_core.c>
+    Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+</IfModule>

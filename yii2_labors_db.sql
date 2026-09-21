@@ -29,11 +29,11 @@ CREATE TABLE `labors` (
   `email` varchar(255) DEFAULT NULL,
   `ip_address` varchar(45) DEFAULT NULL,
   `need_work` tinyint(1) NOT NULL DEFAULT 0,
-  `working_minutes` int(11) DEFAULT NULL,
+  `working_minutes` int(11) unsigned DEFAULT NULL,
   `working_date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `idx-labors-need_work` (`need_work`),
-  KEY `idx-labors-working_date` (`working_date`)
+  KEY `idx-labors-working_date` (`working_date`),
+  KEY `idx-labors-need_work-working_date` (`need_work`,`working_date`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1001 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -67,7 +67,7 @@ CREATE TABLE `migration` (
 
 LOCK TABLES `migration` WRITE;
 /*!40000 ALTER TABLE `migration` DISABLE KEYS */;
-INSERT INTO `migration` VALUES ('m000000_000000_base',1789746634),('m260918_154708_create_labors_table',1789746634),('m260918_154833_mockupload',1789746635);
+INSERT INTO `migration` VALUES ('m000000_000000_base',1789746634),('m260918_154708_create_labors_table',1789746634),('m260918_154833_mockupload',1789746635),('m260921_120000_harden_labors_table',1789987551);
 /*!40000 ALTER TABLE `migration` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -80,4 +80,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-09-18 17:19:36
+-- Dump completed on 2026-09-21 12:09:59

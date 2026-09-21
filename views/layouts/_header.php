@@ -40,11 +40,11 @@ $items = [
         ],
     ) ?>
     <?= Html::button(
-        'Theme',
+        Yii::t('app', 'Theme'),
         [
             'id' => 'theme-toggle',
             'class' => 'btn btn-outline-light btn-sm ms-2',
-            'aria-label' => 'Switch theme',
+            'aria-label' => Yii::t('app', 'Switch theme'),
         ],
     ) ?>
     <?php NavBar::end() ?>

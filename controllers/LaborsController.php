@@ -3,7 +3,8 @@
 namespace app\controllers;
 
 use app\models\Labors;
-use yii\data\ActiveDataProvider;
+use app\models\LaborsSearch;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -22,7 +23,7 @@ class LaborsController extends Controller
             parent::behaviors(),
             [
                 'verbs' => [
-                    'class' => VerbFilter::className(),
+                    'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
                     ],
@@ -32,27 +33,17 @@ class LaborsController extends Controller
     }
 
     /**
-     * Lists all Labors models.
+     * Lists all Labors models, with column filters, sorting and pagination.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Labors::find(),
-            /*
-            'pagination' => [
-                'pageSize' => 50
-            ],
-            'sort' => [
-                'defaultOrder' => [
-                    'id' => SORT_DESC,
-                ]
-            ],
-            */
-        ]);
+        $searchModel = new LaborsSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -81,6 +72,7 @@ class LaborsController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
+                Yii::$app->session->setFlash('success', Yii::t('app', 'The labor record has been created.'));
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
@@ -104,6 +96,7 @@ class LaborsController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', Yii::t('app', 'The labor record has been updated.'));
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -121,7 +114,11 @@ class LaborsController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        if ($this->findModel($id)->delete()) {
+            Yii::$app->session->setFlash('success', Yii::t('app', 'The labor record has been deleted.'));
+        } else {
+            Yii::$app->session->setFlash('error', Yii::t('app', 'The labor record could not be deleted.'));
+        }
 
         return $this->redirect(['index']);
     }
@@ -139,6 +136,6 @@ class LaborsController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
 }

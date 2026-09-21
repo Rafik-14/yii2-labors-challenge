@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="mb-4">
         <h1 class="h3 fw-bold mb-1"><?= Html::encode($this->title) ?></h1>
-        <p class="text-secondary small mb-0">Fill out the details below to add a new labor record.</p>
+        <p class="text-secondary small mb-0"><?= Yii::t('app', 'Fill out the details below to add a new labor record.') ?></p>
     </div>
 
     <?= $this->render('_form', [
