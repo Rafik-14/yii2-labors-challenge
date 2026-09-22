@@ -12,15 +12,19 @@ use kartik\checkbox\CheckboxX;
 // Inline SVG icons: the Kartik defaults use Font Awesome, which this project does not load.
 $calendarIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v1h14V3a1 1 0 0 0-1-1H2zm13 3H1v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V5z"/></svg>';
 $clearIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/></svg>';
+// Checkbox-X only knows Bootstrap 3/4 icons: under Bootstrap 5 it falls back to a Glyphicon, which renders as nothing.
+$checkIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z"/></svg>';
 ?>
 
-<div class="card border-0 shadow-sm rounded-4 p-4 p-md-4 labors-card">
+<div class="card shadow-sm rounded-4 p-4 p-md-4 labors-card">
     <div class="card-body">
 
         <?php $form = ActiveForm::begin([
             'id' => 'labors-form',
             // Yii's (translated) client validation only; no browser-language HTML5 tooltips
             'options' => ['novalidate' => true],
+            // highlight errors only: a green tick on optional fields the user never filled in is misleading
+            'successCssClass' => '',
             'fieldConfig' => [
                 'labelOptions' => ['class' => 'form-label fw-semibold'],
             ],
@@ -77,7 +81,7 @@ $clearIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fil
                     'options' => [
                         // the attribute holds the DB value (Y-m-d H:i:s); show it in the picker format
                         'value' => $model->getWorkingDateInput(),
-                        'placeholder' => Yii::t('app', 'Select date (e.g. 23-Feb-1982)...'),
+                        'placeholder' => Yii::t('app', 'e.g. {example}', ['example' => '23-Feb-1982']),
                         'class' => 'form-control form-control-lg fs-6',
                         'autocomplete' => 'off',
                     ],
@@ -100,6 +104,7 @@ $clearIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fil
                     ])->widget(CheckboxX::class, [
                         'pluginOptions' => [
                             'threeState' => false,
+                            'iconChecked' => $checkIcon,
                         ],
                     ]) ?>
                 </div>

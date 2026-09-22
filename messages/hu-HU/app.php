@@ -17,14 +17,14 @@ return [
     'Cancel' => 'Mégse',
     'Update' => 'Szerkesztés',
     'Delete' => 'Törlés',
-    'Are you sure you want to delete this item?' => 'Biztosan törölni szeretné ezt az elemet?',
+    'Are you sure you want to delete this labor record?' => 'Biztosan törölni szeretné ezt a munkavállalói rekordot?',
     'Fill out the details below to add a new labor record.' => 'Töltse ki az alábbi adatokat új munkavállalói rekord felvételéhez.',
     'Enter first name' => 'Adja meg a keresztnevet',
     'Enter last name' => 'Adja meg a vezetéknevet',
     'Enter email address' => 'Adja meg az e-mail címet',
     'Enter IP address' => 'Adja meg az IP címet',
     'Enter working minutes' => 'Adja meg a ledolgozott perceket',
-    'Select date (e.g. 23-Feb-1982)...' => 'Válasszon dátumot (pl. 23-Feb-1982)...',
+    'e.g. {example}' => 'pl. {example}',
     'Select date' => 'Dátum kiválasztása',
     'Clear date' => 'Dátum törlése',
     '{attribute} must be a valid date, e.g. {example}.' => '{attribute} csak érvényes dátum lehet, pl. {example}.',
@@ -34,27 +34,17 @@ return [
     'The labor record could not be deleted.' => 'A munkavállalói rekordot nem sikerült törölni.',
 
     // Layout
-    'Home' => 'Kezdőlap',
     'Theme' => 'Téma',
     'Switch theme' => 'Téma váltása',
+    'Switch to light mode' => 'Váltás világos módra',
+    'Switch to dark mode' => 'Váltás sötét módra',
     'Skip to main content' => 'Ugrás a fő tartalomra',
+    'Powered by' => 'Működteti:',
 
     // Error page
+    'Error {code}' => 'Hiba ({code})',
     'The requested page does not exist.' => 'A kért oldal nem létezik.',
     'The above error occurred while the Web server was processing your request.' => 'A fenti hiba a kérés feldolgozása közben lépett fel a webszerveren.',
     'Please contact us if you think this is a server error. Thank you.' => 'Ha úgy gondolja, hogy szerverhiba történt, kérjük, vegye fel velünk a kapcsolatot. Köszönjük.',
     'Go to Homepage' => 'Vissza a kezdőlapra',
-
-    // Home page
-    'My Yii Application' => 'Yii alkalmazásom',
-    'Build with Yii Framework' => 'Fejlesszen a Yii keretrendszerrel',
-    'A high-performance PHP framework best for developing web applications. Fast, secure, and professional.' => 'Nagy teljesítményű PHP keretrendszer webalkalmazások fejlesztéséhez. Gyors, biztonságos és professzionális.',
-    'Debug toolbar and debugger for Yii2. Inspect logs, database queries, request data, and application performance in real time.' => 'Hibakereső eszköztár és debugger Yii2-höz. Naplók, adatbázis-lekérdezések, kérésadatok és az alkalmazás teljesítményének valós idejű vizsgálata.',
-    'Automatic code generator for models, controllers, CRUD, forms, and modules. Boost your productivity with scaffolding.' => 'Automatikus kódgenerátor modellekhez, kontrollerekhez, CRUD-hoz, űrlapokhoz és modulokhoz. Növelje termelékenységét kódváz-generálással.',
-    'Asynchronous job queue with support for DB, Redis, AMQP, Beanstalk, and SQS drivers. Run background tasks with ease.' => 'Aszinkron feladatsor DB, Redis, AMQP, Beanstalk és SQS meghajtókkal. Futtasson háttérfeladatokat egyszerűen.',
-    'Redis integration providing cache, session, and ActiveRecord support. Leverage in-memory storage for blazing-fast data access.' => 'Redis-integráció gyorsítótárhoz, munkamenetekhez és ActiveRecordhoz. Villámgyors adatelérés memóriabeli tárolással.',
-    'Elasticsearch integration with ActiveRecord and query builder. Add powerful full-text search capabilities to your application.' => 'Elasticsearch-integráció ActiveRecorddal és lekérdezésépítővel. Hatékony teljes szöveges keresés az alkalmazásában.',
-    'Email sending integration powered by Symfony Mailer. Compose and deliver rich HTML emails with attachments and templates.' => 'Symfony Mailer alapú e-mail-küldés. Gazdag HTML e-mailek összeállítása és kézbesítése mellékletekkel és sablonokkal.',
-    'Learn more' => 'Továbbiak',
-    'Learn more about {name}' => 'További információ: {name}',
 ];

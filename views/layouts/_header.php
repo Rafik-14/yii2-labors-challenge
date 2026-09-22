@@ -10,10 +10,6 @@ use yii\helpers\Html;
 
 $items = [
     [
-        'label' => Yii::t('app', 'Home'),
-        'url' => ['/site/index'],
-    ],
-    [
         'label' => Yii::t('app', 'Labors'),
         'url' => ['/labors/index'],
     ],
@@ -45,6 +41,9 @@ $items = [
             'id' => 'theme-toggle',
             'class' => 'btn btn-outline-light btn-sm ms-2',
             'aria-label' => Yii::t('app', 'Switch theme'),
+            // used by web/js/color-mode.js, which updates the label after each switch
+            'data-label-light' => Yii::t('app', 'Switch to light mode'),
+            'data-label-dark' => Yii::t('app', 'Switch to dark mode'),
         ],
     ) ?>
     <?php NavBar::end() ?>

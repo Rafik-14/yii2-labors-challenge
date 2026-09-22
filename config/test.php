@@ -18,6 +18,7 @@ return [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+    'name' => $web['name'],
     'language' => $web['language'],
     'container' => [
         'definitions' => $web['container']['definitions'],
