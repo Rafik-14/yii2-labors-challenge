@@ -73,7 +73,6 @@ a.desc:after {
 [data-bs-theme="dark"] .footer-logo-dark  { display: inline-block; }
 
 /* centered page layout */
-.site-index,
 .site-error {
     flex: 1;
 }
@@ -162,10 +161,11 @@ a.desc:after {
     opacity: 0.55;
 }
 
+/* pager links keep the required link colour in dark mode too; a light surface keeps them readable */
 [data-bs-theme="dark"] .pagination .page-item .page-link {
-    background-color: var(--bs-tertiary-bg);
+    background-color: var(--bs-light);
     border-color: var(--bs-border-color);
-    color: rgb(64, 179, 216);
+    color: rgb(20, 96, 130);
 }
 
 [data-bs-theme="dark"] .pagination .page-item .page-link:hover {
@@ -180,57 +180,40 @@ a.desc:after {
     color: #fff;
 }
 
-/* hero banner */
-.hero-banner {
-    background: linear-gradient(135deg, #83C933 0%, #3a9cbd 40%, #40B3D8 100%);
-    position: relative;
-}
-
-.hero-lead {
-    max-width: 520px;
-}
-
-.hero-logo {
-    height: 120px;
-    opacity: .45;
-    right: 2.5rem;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.hero-banner::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background:
-        radial-gradient(circle at 15% 85%, rgba(241, 138, 42, .3) 0%, transparent 45%),
-        radial-gradient(circle at 85% 15%, rgba(131, 201, 51, .25) 0%, transparent 40%),
-        radial-gradient(ellipse at 50% 50%, rgba(64, 179, 216, .15) 0%, transparent 60%);
-    pointer-events: none;
-}
-
-/* extension cards */
-.extension-card {
-    transition: transform .15s ease-in-out, box-shadow .15s ease-in-out;
-}
-
-.extension-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, .12) !important;
-}
-
-.extension-icon {
-    font-size: 1.5rem;
-    line-height: 1;
-}
-
-/* dark mode: extension cards */
-[data-bs-theme="dark"] .extension-card {
+/* -------------------------------------------------------
+   Checkbox-X (need_work): follow the light/dark theme
+   (the widget's own CSS hard-codes a dark grey tick on a transparent box)
+   ------------------------------------------------------- */
+.cbx-container .cbx {
+    color: var(--bs-emphasis-color);
     background-color: var(--bs-body-bg);
-    box-shadow: 0 0 0 1px var(--bs-border-color), 0 2px 8px rgba(0, 0, 0, .3);
+    border-color: var(--bs-border-color);
 }
 
-[data-bs-theme="dark"] .extension-card:hover {
-    box-shadow: 0 0 0 1px var(--bs-border-color), 0 8px 24px rgba(0, 0, 0, .4) !important;
+.cbx-container .cbx:focus-visible {
+    outline: 2px solid rgb(20, 96, 130);
+    outline-offset: 2px;
+}
+
+/* -------------------------------------------------------
+   Create/update form card: visible edge in both themes
+   (card and page share the same background colour)
+   ------------------------------------------------------- */
+.labors-card {
+    border: 1px solid var(--bs-border-color);
+}
+
+[data-bs-theme="dark"] .labors-card {
+    background-color: var(--bs-tertiary-bg);
+}
+
+/* the need_work panel inside the card keeps a contrast step in dark mode */
+[data-bs-theme="dark"] .labors-card .bg-body-tertiary {
+    background-color: var(--bs-body-bg) !important;
+}
+
+/* secondary outline buttons (e.g. "Mégse"): Bootstrap's grey is too dark to read on dark surfaces */
+[data-bs-theme="dark"] .btn-outline-secondary {
+    --bs-btn-color: var(--bs-secondary-color);
+    --bs-btn-border-color: var(--bs-border-color);
 }

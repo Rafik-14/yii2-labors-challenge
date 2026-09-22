@@ -28,7 +28,11 @@ $this->render('_head');
 <main id="main" class="flex-grow-1" role="main" tabindex="-1">
     <div class="container">
         <?php if (!empty($this->params['breadcrumbs'])): ?>
-            <?= Breadcrumbs::widget(['links' => $this->params['breadcrumbs']]) ?>
+            <?= Breadcrumbs::widget([
+                'links' => $this->params['breadcrumbs'],
+                // the labors list is the home page, so a separate "Home" crumb would point to it twice
+                'homeLink' => false,
+            ]) ?>
         <?php endif ?>
         <?= Alert::widget() ?>
         <?= $content ?>

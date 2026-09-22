@@ -43,7 +43,11 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'working_date',
                 'value' => static fn (Labors $model) => $model->getWorkingDateDisplay(),
-                'filterInputOptions' => ['class' => 'form-control', 'placeholder' => '2021-05-19'],
+                // same format as the column shows; the filter also accepts 2021-05-19
+                'filterInputOptions' => [
+                    'class' => 'form-control',
+                    'placeholder' => Yii::t('app', 'e.g. {example}', ['example' => '19-May-2021']),
+                ],
             ],
             [
                 'class' => ActionColumn::class,

@@ -14,8 +14,11 @@ if ($cookieValidationKey === '') {
 
 $config = [
     'id' => 'basic',
+    'name' => 'Munkavállalói nyilvántartás',
     'language' => 'hu-HU',
     'basePath' => dirname(__DIR__),
+    // the labors list is the home page
+    'defaultRoute' => 'labors/index',
     'bootstrap' => ['log'],
     'container' => [
         'definitions' => [

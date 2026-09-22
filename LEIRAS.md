@@ -82,7 +82,10 @@ A `config/params.php`-ban a `bsVersion => '5.x'` beállítással a Kartik widget
 
 A címkék fordítását a modellben oldottam meg, nem a formban: így a form, a lista fejléce, a részletező oldal és a
 validációs hibaüzenetek (pl. „E-mail cím nem valódi e-mail cím.”) is magyarul, egységesen jelennek meg. A menü, a
-gombok, a visszajelzések és a hibaoldal szövegei is fordítva vannak (49/49 kulcs).
+gombok, a visszajelzések és a hibaoldal szövegei is fordítva vannak (37/37 kulcs).
+
+A sablon kezdőlapját (Yii keretrendszer-bemutató és bővítmény-ajánlók) eltávolítottam, mert nem kapcsolódott a
+feladathoz: a kezdőlap most a munkavállalók listája (`defaultRoute`).
 
 ## 4. Backend – API
 
@@ -155,7 +158,7 @@ Ellenőrzésként a végpont kimenetét egy tőle független, egyszerű implemen
 - 48 unit teszt (160 ellenőrzés): a modell validációja és dátumkezelése, a keresőmodell, az API összesítési szabályai
   (több műszak egy napon, `null` perc, kizárt rekordok, érvénytelen dátum, éjfél körüli műszakok), az adatbázis nélküli
   tartalék működés, a 405/401 válaszok, a flash üzenet widget;
-- 1 acceptance teszt a kezdőlapra és a listaoldalra;
+- 1 acceptance teszt: a kezdőlapon a munkavállalók listája jelenik meg, és onnan elérhető a létrehozás oldal;
 - kézi ellenőrzés böngészőben: rekord létrehozása a dátumválasztóval, szerkesztés, szűrés, lapozás, világos/sötét téma.
 
 ## Futtatás

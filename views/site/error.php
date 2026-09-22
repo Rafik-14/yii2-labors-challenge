@@ -10,8 +10,9 @@ declare(strict_types=1);
 use yii\helpers\Html;
 use yii\web\HttpException;
 
-$this->title = $name;
 $statusCode = $exception instanceof HttpException ? $exception->statusCode : 500;
+// $name is Yii's English status text (e.g. "Not Found (#404)"); the tab title follows the app language instead
+$this->title = Yii::t('app', 'Error {code}', ['code' => $statusCode]);
 ?>
 <div class="site-error d-flex align-items-center justify-content-center text-center">
     <div class="site-error-content mx-auto">
